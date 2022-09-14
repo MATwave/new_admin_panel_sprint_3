@@ -15,9 +15,7 @@ services:
       - psql
 
   psql:
-    # Образ и версия базы, которую мы будем использовать
     image: postgres:alpine
-    # Внешний том(volume) и место где он будет подключен внутри контейнера
     volumes:
       - ./psql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
       - postgres_data:/var/lib/postgresql/data
@@ -49,6 +47,11 @@ services:
       - "8080:8080"
     depends_on:
       - nginx
+
+  elastic:
+    image: docker.io/elastic/elasticsearch:7.7.0
+    environment:
+      - discovery.type=single-node
 
 
 volumes:
