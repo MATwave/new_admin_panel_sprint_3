@@ -3,7 +3,6 @@ services:
 
   service:
     build: app
-    command: uwsgi --strict --ini uwsgi.ini
     expose:
       - "8000"
     volumes:
@@ -52,6 +51,8 @@ services:
     image: docker.io/elastic/elasticsearch:7.7.0
     environment:
       - discovery.type=single-node
+    ports:
+      - "9200:9200"
 
 
 volumes:
