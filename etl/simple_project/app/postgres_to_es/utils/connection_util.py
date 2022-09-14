@@ -15,8 +15,10 @@ def elastic_search_connection(dsn: dict):
         Подключение к ElasticSearch.
     """
     es_connection = Elasticsearch(dsn['host'])
-    yield es_connection
-    es_connection.close()
+    try:
+        yield es_connection
+    finally:
+        es_connection.close()
 
 
 @contextmanager
@@ -32,5 +34,7 @@ def postgres_connection(dsn: dict):
     """
     connection = psycopg2.connect(**dsn, cursor_factory=RealDictCursor)
     connection.set_session(autocommit=True)
-    yield connection
-    connection.close()
+    try:
+        yield connection
+    finally:
+        connection.close()
