@@ -136,4 +136,4 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
-/docker_compose/simple_project/app/sqlite_to_postgres/load_data.log
+/etl/simple_project/app/sqlite_to_postgres/load_data.log
