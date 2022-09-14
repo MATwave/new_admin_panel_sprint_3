@@ -1,5 +1,5 @@
 import time
-from utils.env_utild import return_dsl
+from utils.env_utild import return_dsn
 from utils.connection_util import (postgres_connection, elastic_search_connection)
 
 from utils.logger_util import get_logger
@@ -14,7 +14,7 @@ def etl(logger, dsn) -> None:
 
 
 if __name__ == '__main__':
-    dsn = return_dsl()
+    dsn = return_dsn()
     logger = get_logger(__name__)
     while True:
         etl(logger, dsn)

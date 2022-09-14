@@ -1,7 +1,7 @@
 import dotenv
 import os
 
-def return_dsl() -> dict:
+def return_dsn() -> dict:
     '''
     Возвращает словарь DSN (Data Source Name) для подключения к БД
     '''
