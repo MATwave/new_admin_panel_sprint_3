@@ -2,7 +2,6 @@ import json
 
 from elasticsearch import helpers
 
-from etl.simple_project.app.postgres_to_es.utils.backoff_util import backoff
 from etl.simple_project.app.postgres_to_es.utils.connection_util import elastic_search_connection
 
 
@@ -10,7 +9,6 @@ class Loader:
     def __init__(self, dsn, logger) -> None:
         self.dsn = dsn
         self.logger = logger
-        self.create_index('movies')
 
     def create_index(self, index_name: str) -> None:
         """Создание ES индекса.
@@ -125,7 +123,7 @@ class Loader:
         }
 
         with elastic_search_connection(self.dsn) as es:
-            self.logger.info(es.ping())
+            self.logger.info(f'соединение с elasticsearch установлено -> {es.ping()}')
             if not es.indices.exists(index='movies'):
                 es.indices.create(index=index_name, settings=settings, mappings=mappings)
                 self.logger.info(f"Создание индекса {index_name} со следующими схемами:"
@@ -133,7 +131,6 @@ class Loader:
             else:
                 self.logger.info("Индекс movies уже создан")
 
-    @backoff()
     def load(self, data: list[dict]) -> None:
         """Загружаем данные пачками в ElasticSearch
         :param data: Преобразованные словари для вставки в ElasticSearch
