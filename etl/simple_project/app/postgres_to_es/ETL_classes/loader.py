@@ -3,14 +3,14 @@ from elasticsearch import helpers
 from etl.simple_project.app.postgres_to_es.utils.connection_util import elastic_search_connection
 import json
 
+
 class Loader:
     def __init__(self, dsn, logger) -> None:
         self.dsn = dsn
         self.logger = logger
         self.create_index('movies')
 
-
-    def create_index(self,index_name: str) -> None:
+    def create_index(self, index_name: str) -> None:
         """Создание ES индекса.
            :param index_name: Наименование индекса.
            :param mapping: Настройки индекса
@@ -122,7 +122,6 @@ class Loader:
             },
         }
 
-
         with elastic_search_connection(self.dsn) as es:
             self.logger.info(es.ping())
             if not es.indices.exists(index='movies'):
@@ -132,12 +131,11 @@ class Loader:
             else:
                 self.logger.info("Индекс movies уже создан")
 
-
     @backoff()
     def load(self, data: list[dict]) -> None:
         """Загружаем данные пачками в ElasticSearch
         :param data: Преобразованные словари для вставки в ElasticSearch
         """
-        actions = [{'_index': 'movies','_id': row['id'],'_source': row,} for row in data]
+        actions = [{'_index': 'movies', '_id': row['id'], '_source': row, } for row in data]
         with elastic_search_connection(self.dsn) as es:
             helpers.bulk(es, actions)
