@@ -1,6 +1,5 @@
 import datetime
 
-from etl.simple_project.app.postgres_to_es.utils.backoff_util import backoff
 from etl.simple_project.app.postgres_to_es.utils.connection_util import postgres_connection
 
 
@@ -13,9 +12,7 @@ class Extractor:
         self.dsn = psql_dsn
         self.logger = logger
 
-    @backoff()
-    def extract(self, extract_timestamp: datetime.datetime, start_timestamp: datetime.datetime,
-                exclude_ids: list):
+    def extract(self, extract_timestamp: datetime.datetime, start_timestamp: datetime.datetime,exclude_ids: list):
         """
         Метод чтения данных пачками.
         После падения чтение начинается с последней обработанной записи
