@@ -1,7 +1,9 @@
-from etl.simple_project.app.postgres_to_es.utils.backoff_util import backoff
-from elasticsearch import helpers
-from etl.simple_project.app.postgres_to_es.utils.connection_util import elastic_search_connection
 import json
+
+from elasticsearch import helpers
+
+from etl.simple_project.app.postgres_to_es.utils.backoff_util import backoff
+from etl.simple_project.app.postgres_to_es.utils.connection_util import elastic_search_connection
 
 
 class Loader:
