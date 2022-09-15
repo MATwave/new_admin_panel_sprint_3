@@ -2,7 +2,7 @@ import json
 
 from elasticsearch import helpers
 
-from etl.simple_project.app.postgres_to_es.utils.connection_util import elastic_search_connection
+from etl.simple_project.postgres_to_es.utils.connection_util import elastic_search_connection
 
 
 class Loader:

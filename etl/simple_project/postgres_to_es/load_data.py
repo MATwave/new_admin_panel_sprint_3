@@ -8,7 +8,7 @@ import psycopg2
 from ETL_classes.extractor import Extractor
 from ETL_classes.loader import Loader
 from ETL_classes.transformer import Transformer
-from etl.simple_project.app.postgres_to_es.utils.backoff_util import backoff
+from etl.simple_project.postgres_to_es.utils.backoff_util import backoff
 from storage import (State, JsonFileStorage)
 from utils.env_utild import return_dsn
 from utils.logger_util import get_logger

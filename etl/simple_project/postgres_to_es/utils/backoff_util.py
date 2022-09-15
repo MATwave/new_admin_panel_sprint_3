@@ -1,7 +1,7 @@
 import time
 from functools import wraps
 
-from etl.simple_project.app.postgres_to_es.utils.logger_util import get_logger
+from etl.simple_project.postgres_to_es.utils.logger_util import get_logger
 
 logger = get_logger(__name__)
 

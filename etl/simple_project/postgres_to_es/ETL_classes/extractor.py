@@ -1,6 +1,6 @@
 import datetime
 
-from etl.simple_project.app.postgres_to_es.utils.connection_util import postgres_connection
+from etl.simple_project.postgres_to_es.utils.connection_util import postgres_connection
 
 
 class Extractor:
