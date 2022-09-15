@@ -16,6 +16,7 @@ def etl(logger, extracrot, transformer, state):
     '''
 
     last_sync_timestamp = state.get_state('last_sync_timestamp')
+    logger.info(f'last_sync_timestamp = {last_sync_timestamp}')
     start_timestamp = datetime.datetime.now()
     filmwork_ids = state.get_state('filmwork_ids')
 
@@ -32,9 +33,11 @@ if __name__ == '__main__':
 
     state = State(JsonFileStorage(file_path='state.json'))
 
-    extractor = Extractor(psql_dsn=dsn['psql'], chunk_size=50, storage_state=state)
+    chunk_size = int(os.environ.get('CHUNK_SIZE'))
+
+    extractor = Extractor(psql_dsn=dsn['psql'], chunk_size=chunk_size, storage_state=state, logger=logger)
     transformer = Transformer()
-    loader = Loader(dsn['es'], logger)
+    loader = Loader(dsn=dsn['es'], logger=logger)
 
     while True:
         etl(logger, extractor, transformer, state)
