@@ -7,10 +7,11 @@ from etl.simple_project.app.postgres_to_es.utils.connection_util import postgres
 class Extractor:
     '''класс для извлечения данных из PostgreSQL'''
 
-    def __init__(self, psql_dsn, chunk_size: int, storage_state) -> None:
+    def __init__(self, psql_dsn, chunk_size: int, storage_state, logger) -> None:
         self.chunk_size = chunk_size
         self.state = storage_state
         self.dsn = psql_dsn
+        self.logger = logger
 
     @backoff()
     def extract(self, extract_timestamp: datetime.datetime, start_timestamp: datetime.datetime,
@@ -19,9 +20,7 @@ class Extractor:
         Метод чтения данных пачками.
         После падения чтение начинается с последней обработанной записи
         """
-        print(self.dsn)
         with postgres_connection(self.dsn) as pg_conn,pg_conn.cursor() as cursor:
-            print('here')
             sql = """
                     SELECT 
                         fw.id,
@@ -54,13 +53,14 @@ class Extractor:
             ORDER BY last_modified DESC;
             """
             cursor.execute(sql, {'exclude_ids': tuple(exclude_ids),
-                                         'extract_timestamp': extract_timestamp,
-                                         'start_timestamp': start_timestamp
-                                         }
-                                   )
+                                 'extract_timestamp': extract_timestamp,
+                                 'start_timestamp': start_timestamp
+                                 }
+                           )
 
             while True:
                 rows = cursor.fetchmany(self.chunk_size)
+                self.logger.info(f'извлекли пачку размером {len(rows)}')
                 if not rows:
                     break
                 for data in rows:
