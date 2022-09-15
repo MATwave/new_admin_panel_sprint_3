@@ -1,5 +1,7 @@
-import dotenv
 import os
+
+import dotenv
+
 
 def return_dsn() -> dict:
     '''
