@@ -1,11 +1,13 @@
-import time
-from utils.env_utild import return_dsn
 import datetime
-from utils.logger_util import get_logger
-from storage import (State, JsonFileStorage)
+import os
+import time
+
 from ETL_classes.extractor import Extractor
-from ETL_classes.transformer import Transformer
 from ETL_classes.loader import Loader
+from ETL_classes.transformer import Transformer
+from storage import (State, JsonFileStorage)
+from utils.env_utild import return_dsn
+from utils.logger_util import get_logger
 
 
 def etl(logger, extracrot, transformer, state):
@@ -29,9 +31,11 @@ if __name__ == '__main__':
     logger = get_logger(__name__)
 
     state = State(JsonFileStorage(file_path='state.json'))
-    extracrot = Extractor(psql_dsn=dsn['psql'], chunk_size=50, storage_state=state)
+
+    extractor = Extractor(psql_dsn=dsn['psql'], chunk_size=50, storage_state=state)
     transformer = Transformer()
     loader = Loader(dsn['es'], logger)
+
     while True:
-        etl(logger, extracrot, transformer, state)
-        time.sleep(60)
+        etl(logger, extractor, transformer, state)
+        time.sleep(float(os.environ.get('ES_SLEEP')))
