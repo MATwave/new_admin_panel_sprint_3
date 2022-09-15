@@ -23,7 +23,7 @@ def etl(logger, extracrot, transformer, state):
     for extracted_part in extracrot.extract(last_sync_timestamp, start_timestamp, filmwork_ids):
         data = transformer.transform(extracted_part)
         loader.load(data)
-        state.set_state("last_sync_timestamp", str(start_timestamp))
+    state.set_state("last_sync_timestamp", str(start_timestamp))
     state.set_state("filmwork_ids", [])
 
 
