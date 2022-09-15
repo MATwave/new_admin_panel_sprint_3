@@ -57,9 +57,10 @@ class Extractor:
 
             while True:
                 rows = cursor.fetchmany(self.chunk_size)
-                self.logger.info(f'извлекли пачку размером {len(rows)}')
                 if not rows:
+                    self.logger.info('изменений не найдено')
                     break
+                self.logger.info(f'извлекли пачку размером {len(rows)}')
                 for data in rows:
                     ids_list = self.state.get_state("filmwork_ids")
                     ids_list.append(data['id'])
