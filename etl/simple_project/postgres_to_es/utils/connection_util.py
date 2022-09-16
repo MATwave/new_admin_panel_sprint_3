@@ -6,7 +6,7 @@ from psycopg2.extras import RealDictCursor
 
 
 @contextmanager
-def elastic_search_connection(dsn: dict):
+def elastic_search_connection(dsn: str):
     """Создает подключение к ElasticSearch, которое закроет на выходе.
 
     Args:
@@ -15,7 +15,7 @@ def elastic_search_connection(dsn: dict):
     Yields:
         Подключение к ElasticSearch.
     """
-    es_connection = Elasticsearch(dsn['host'])
+    es_connection = Elasticsearch(dsn)
     try:
         yield es_connection
     finally:
