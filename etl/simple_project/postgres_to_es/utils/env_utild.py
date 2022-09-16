@@ -7,7 +7,6 @@ def return_dsn() -> dict:
     '''
     Возвращает словарь DSN (Data Source Name) для подключения к БД
     '''
-    dotenv.load_dotenv()
     dsn = {'psql': {'dbname': os.environ.get('POSTGRES_DB'),
                     'user': os.environ.get('POSTGRES_USER'),
                     'password': os.environ.get('POSTGRES_PASSWORD'),
