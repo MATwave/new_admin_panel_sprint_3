@@ -1,15 +1,18 @@
 import json
 
-from elasticsearch import helpers
+import elasticsearch.exceptions
+from elasticsearch import helpers,ConnectionError
 
 from utils.connection_util import elastic_search_connection
-
+from utils.backoff_util import backoff
 
 class Loader:
     def __init__(self, dsn, logger) -> None:
         self.dsn = dsn
         self.logger = logger
+        self.create_index('movies')
 
+    @backoff((ConnectionError,))
     def create_index(self, index_name: str) -> None:
         """Создание ES индекса.
            :param index_name: Наименование индекса.
@@ -123,6 +126,8 @@ class Loader:
         }
 
         with elastic_search_connection(self.dsn) as es:
+            if not es.ping():
+                raise elasticsearch.exceptions.ConnectionError
             if not es.indices.exists(index='movies'):
                 es.indices.create(index=index_name, settings=settings, mappings=mappings)
                 self.logger.info(f"Создание индекса {index_name} со следующими схемами:"
