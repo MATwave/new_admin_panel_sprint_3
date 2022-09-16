@@ -11,7 +11,7 @@ from ETL_classes.loader import Loader
 from ETL_classes.transformer import Transformer
 from utils.backoff_util import backoff
 from storage import (State, JsonFileStorage)
-from utils.env_utild import return_dsn
+from utils.env_utild import BaseConfig
 from utils.logger_util import get_logger
 
 
@@ -35,18 +35,16 @@ def etl(logger: logging.Logger, extracrot: Extractor, transformer: Transformer, 
 
 
 if __name__ == '__main__':
-    dsn = return_dsn()
+    configs = BaseConfig()
     logger = get_logger(__name__)
 
     state = State(JsonFileStorage(file_path='state.json'))
 
-    chunk_size = int(os.environ.get('CHUNK_SIZE'))
-
-    extractor = Extractor(psql_dsn=dsn['psql'], chunk_size=chunk_size, storage_state=state, logger=logger)
+    extractor = Extractor(psql_dsn=configs.dsn, chunk_size=configs.chunk_size, storage_state=state, logger=logger)
     transformer = Transformer()
-    loader = Loader(dsn=dsn['es'], logger=logger)
+    loader = Loader(dsn=configs.es_base_url, logger=logger)
 
     while True:
         etl(logger, extractor, transformer, state, loader)
-        logger.info(f'в сон на {float(os.environ.get("ES_SLEEP"))}')
-        time.sleep(float(os.environ.get('ES_SLEEP')))
+        logger.info(f'в сон на {configs.sleep_time}')
+        time.sleep(configs.sleep_time)
