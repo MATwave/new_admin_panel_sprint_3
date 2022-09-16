@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 import time
 
@@ -16,7 +17,7 @@ from utils.logger_util import get_logger
 
 @backoff((elasticsearch.exceptions.ConnectionError,))
 @backoff((psycopg2.OperationalError,))
-def etl(logger, extracrot, transformer, state, loader):
+def etl(logger: logging.Logger, extracrot: Extractor, transformer: Transformer, state: State, loader: Loader) -> None:
     '''
     Extract-Transform-Load процесс перекачки данных из PostgreSQL в Elasticsearch
     '''
@@ -25,8 +26,6 @@ def etl(logger, extracrot, transformer, state, loader):
     logger.info(f'последняя синхронизация была {last_sync_timestamp}')
     start_timestamp = datetime.datetime.now()
     filmwork_ids = state.get_state('filmwork_ids')
-
-    loader.create_index('movies')
 
     for extracted_part in extracrot.extract(last_sync_timestamp, start_timestamp, filmwork_ids):
         data = transformer.transform(extracted_part)
