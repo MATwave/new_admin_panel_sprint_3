@@ -1,4 +1,5 @@
 import datetime
+from typing import Iterator
 
 from utils.connection_util import postgres_connection
 
@@ -12,7 +13,10 @@ class Extractor:
         self.dsn = psql_dsn
         self.logger = logger
 
-    def extract(self, extract_timestamp: datetime.datetime, start_timestamp: datetime.datetime,exclude_ids: list):
+    def extract(self,
+                extract_timestamp: datetime.datetime,
+                start_timestamp: datetime.datetime,
+                exclude_ids: list) -> Iterator:
         """
         Метод чтения данных пачками.
         После падения чтение начинается с последней обработанной записи
@@ -50,7 +54,6 @@ class Extractor:
             HAVING GREATEST(MAX(fw.modified), MAX(g.modified), MAX(p.modified)) > '{str(extract_timestamp)}'
             ORDER BY GREATEST(MAX(fw.modified), MAX(g.modified), MAX(p.modified)) DESC;
             """
-
 
             cursor.execute(sql)
 
