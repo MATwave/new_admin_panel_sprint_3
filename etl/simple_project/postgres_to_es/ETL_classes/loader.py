@@ -135,3 +135,4 @@ class Loader:
         actions = [{'_index': 'movies', '_id': row['id'], '_source': row, } for row in data]
         with elastic_search_connection(self.dsn) as es:
             helpers.bulk(es, actions)
+            self.logger.info(f'загружено {len(data)} строк')
