@@ -26,9 +26,9 @@ class JsonFileStorage(BaseStorage):
             with open(self.file_path) as f:
                 return json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
-            with open(self.file_path,'+') as f:
+            with open(self.file_path,'w') as f:
                 json.dump(self.default_state, f)
-                return json.load(f)
+            return self.retrieve_state()
 
     def save_state(self, state: dict) -> None:
         data = self.retrieve_state()
