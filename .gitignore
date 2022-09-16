@@ -137,4 +137,4 @@ GitHub.sublime-settings
 .history
 
 /etl/simple_project/app/sqlite_to_postgres/load_data.log
-/etl/simple_project/postgres_to_es/state.json
+etl/simple_project/postgres_to_es/state.json
