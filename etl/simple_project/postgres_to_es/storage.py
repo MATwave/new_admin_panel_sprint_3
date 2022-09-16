@@ -18,13 +18,17 @@ class BaseStorage:
 class JsonFileStorage(BaseStorage):
     def __init__(self, file_path: Optional[str] = None):
         self.file_path = file_path
+        self.default_state = {"last_sync_timestamp": "2020-09-16 01:01:01.471642",
+                              "filmwork_ids": []}
 
     def retrieve_state(self) -> dict:
         try:
             with open(self.file_path) as f:
                 return json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
-            return dict()
+            with open(self.file_path,'w') as f:
+                json.dump(self.default_state, f)
+            return json.load(f)
 
     def save_state(self, state: dict) -> None:
         data = self.retrieve_state()
