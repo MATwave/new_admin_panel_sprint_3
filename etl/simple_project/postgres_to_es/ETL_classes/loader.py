@@ -2,7 +2,7 @@ import json
 
 from elasticsearch import helpers
 
-from etl.simple_project.postgres_to_es.utils.connection_util import elastic_search_connection
+from utils.connection_util import elastic_search_connection
 
 
 class Loader:
@@ -123,13 +123,10 @@ class Loader:
         }
 
         with elastic_search_connection(self.dsn) as es:
-            self.logger.info(f'соединение с elasticsearch установлено -> {es.ping()}')
             if not es.indices.exists(index='movies'):
                 es.indices.create(index=index_name, settings=settings, mappings=mappings)
                 self.logger.info(f"Создание индекса {index_name} со следующими схемами:"
                                  f"{json.dumps(settings, indent=2)} и {json.dumps(mappings, indent=2)} ")
-            else:
-                self.logger.info("Индекс movies уже создан")
 
     def load(self, data: list[dict]) -> None:
         """Загружаем данные пачками в ElasticSearch

@@ -8,7 +8,7 @@ import psycopg2
 from ETL_classes.extractor import Extractor
 from ETL_classes.loader import Loader
 from ETL_classes.transformer import Transformer
-from etl.simple_project.postgres_to_es.utils.backoff_util import backoff
+from utils.backoff_util import backoff
 from storage import (State, JsonFileStorage)
 from utils.env_utild import return_dsn
 from utils.logger_util import get_logger
@@ -31,8 +31,8 @@ def etl(logger, extracrot, transformer, state, loader):
     for extracted_part in extracrot.extract(last_sync_timestamp, start_timestamp, filmwork_ids):
         data = transformer.transform(extracted_part)
         loader.load(data)
-    state.set_state("last_sync_timestamp", str(start_timestamp))
-    state.set_state("filmwork_ids", [])
+        state.set_state("last_sync_timestamp", str(start_timestamp))
+        state.set_state("filmwork_ids", [])
 
 
 if __name__ == '__main__':

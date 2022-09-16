@@ -1,6 +1,6 @@
 import datetime
 
-from etl.simple_project.postgres_to_es.utils.connection_util import postgres_connection
+from utils.connection_util import postgres_connection
 
 
 class Extractor:
@@ -50,6 +50,8 @@ class Extractor:
             HAVING GREATEST(MAX(fw.modified), MAX(g.modified), MAX(p.modified)) > '{str(extract_timestamp)}'
             ORDER BY GREATEST(MAX(fw.modified), MAX(g.modified), MAX(p.modified)) DESC;
             """
+
+
             cursor.execute(sql)
 
             while True:
@@ -57,7 +59,7 @@ class Extractor:
                 if not rows:
                     self.logger.info('изменений не найдено')
                     break
-                self.logger.info(f'извлекли пачку размером {len(rows)}')
+                self.logger.info(f'извлечено {len(rows)} строк')
                 for data in rows:
                     ids_list = self.state.get_state("filmwork_ids")
                     ids_list.append(data['id'])

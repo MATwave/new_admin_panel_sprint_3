@@ -54,6 +54,14 @@ services:
     ports:
       - "9200:9200"
 
+  etl:
+    build: postgres_to_es
+    env_file:
+      - ./.env
+    depends_on:
+      - nginx
+      - elastic
+      - service
 
 volumes:
   static_volume:
