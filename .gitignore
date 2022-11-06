@@ -138,3 +138,10 @@ GitHub.sublime-settings
 
 /etl/simple_project/app/sqlite_to_postgres/load_data.log
 etl/simple_project/postgres_to_es/state.json
+.vscode/settings.json
+.idea/misc.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/vcs.xml
+.idea/new_admin_panel_sprint_3.iml
+.idea/modules.xml
