@@ -14,13 +14,13 @@
 
 ![Image alt](1.png)
 ## первичная миграция данных из SqLite в PostgreSQL
-> сама база данных в etl\simple_project\app\sqlite_to_postgres\db.sqlite
-> точка входа etl\simple_project\app\sqlite_to_postgres\load_data.py
+> - сама база данных в `etl\simple_project\app\sqlite_to_postgres\db.sqlite`
+> - точка входа `etl\simple_project\app\sqlite_to_postgres\load_data.py`
 
 Подключаясь к SqLite и PostgreSQL скачиваем пачками информацию из SqLite и также пачками грузим ее в PostgreSQL
 ## Админка
 > точка входа http://localhost/admin
->> логин 'admin' и пароль 'admin'
+>> логин `admin` и пароль `admin`
 
 Админка, позволяющая работать с базой через Django Admin
 В случае добавления новой записи в базу - процесс ETL должен синхронизовать изменения
