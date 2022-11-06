@@ -1,7 +1,3 @@
-# Заключительное задание первого модуля
-
-Ваша задача в этом уроке — загрузить данные в Elasticsearch из PostgreSQL. Подробности задания в папке `etl`.
-
 # Описание структуры 
 
 2. `django_api` — реализация API для выдачи информации о фильме.
@@ -15,7 +11,22 @@
 > - docker compose up -d --build
 
 ### Как это работает?
-точка входа - файл load_data.py
+
+![Image alt](1.png)
+## первичная миграция данных из SqLite в PostgreSQL
+> сама база данных в etl\simple_project\app\sqlite_to_postgres\db.sqlite
+> точка входа etl\simple_project\app\sqlite_to_postgres\load_data.py
+
+Подключаясь к SqLite и PostgreSQL скачиваем пачками информацию из SqLite и также пачками грузим ее в PostgreSQL
+## Админка
+> точка входа http://localhost/admin
+>> логин 'admin' и пароль 'admin'
+
+Админка, позволяющая работать с базой через Django Admin
+В случае добавления новой записи в базу - процесс ETL должен синхронизовать изменения
+
+## Полнотекстовый поиск
+>точка входа - файл load_data.py
 
 Процесс ETL (Extract-Transform-Load процесс перекачки данных) из PostgreSQL в Elasticsearch работает следующим способом:
     

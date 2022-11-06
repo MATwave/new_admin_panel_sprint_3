@@ -10,7 +10,7 @@ from ETL_classes.loader import Loader
 from ETL_classes.transformer import Transformer
 from utils.backoff_util import backoff
 from storage import (State, JsonFileStorage)
-from etl.simple_project.postgres_to_es.utils.env_utils import BaseConfig
+from utils.env_utils import BaseConfig
 from utils.logger_util import get_logger
 
 
