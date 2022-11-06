@@ -13,10 +13,16 @@ class Dsn(BaseSettings):
 
 
 class EsBaseUrl(BaseSettings):
+    """ 
+    определяет host и port у ElasticSearch
+    """
     es_host: str = Field(..., env='ES_HOST')
     es_port: str = Field(9200, env='ES_PORT')
 
     def get_url(self):
+        '''
+        возвращает url ElasticSearch
+        '''
         return 'http://{}:{}'.format(self.es_host, self.es_port)
 
 

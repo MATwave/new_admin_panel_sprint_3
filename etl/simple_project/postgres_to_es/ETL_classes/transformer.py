@@ -3,9 +3,16 @@ import json
 
 class Transformer:
     def transform(self, extracted_part: dict) -> list[dict]:
-        """Обработка данных из Postgres и преобразование в формат для ElasticSearch
-        :param data: Словарь из Postgres
         """
+        Обработка данных из Postgres и преобразование в формат для ElasticSearch
+        
+        Args:
+            extracted_part (dict): кусочек данных из Postgres
+
+        Returns:
+            list[dict]: возвращаем преобразованные данные в виде списка словарей для ElasticSearch
+        """
+
         transformed_part = []
         for row in extracted_part:
             filmwork = {
@@ -21,4 +28,5 @@ class Transformer:
                 "writers": json.loads(row['writers']) if row['writers'] is not None else []
             }
             transformed_part.append(filmwork)
+        
         return transformed_part

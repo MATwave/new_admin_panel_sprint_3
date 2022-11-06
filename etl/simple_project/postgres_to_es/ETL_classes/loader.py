@@ -10,6 +10,7 @@ class Loader:
     def __init__(self, dsn, logger) -> None:
         self.dsn = dsn
         self.logger = logger
+        # при первичной инициализации класса Loader создадим (если нет) индекс movies в ElasticSearch
         self.create_index('movies')
 
     @backoff((ConnectionError,))
@@ -125,10 +126,13 @@ class Loader:
             },
         }
 
+        # подключившись к ES
         with elastic_search_connection(self.dsn) as es:
             if not es.ping():
                 raise elasticsearch.exceptions.ConnectionError
+            # если нет индекса
             if not es.indices.exists(index='movies'):
+                # создаем индекс movies
                 es.indices.create(index=index_name, settings=settings, mappings=mappings)
                 self.logger.info(f"Создание индекса {index_name} со следующими схемами:"
                                  f"{json.dumps(settings, indent=2)} и {json.dumps(mappings, indent=2)} ")
@@ -138,6 +142,8 @@ class Loader:
         :param data: Преобразованные словари для вставки в ElasticSearch
         """
         actions = [{'_index': 'movies', '_id': row['id'], '_source': row, } for row in data]
+        # подключившись к ElasticSearch
         with elastic_search_connection(self.dsn) as es:
+            # используя встроенные методы библиотеки elasticsearch грузим данные в ElasticSearch
             helpers.bulk(es, actions)
             self.logger.info(f'загружено {len(data)} строк')
